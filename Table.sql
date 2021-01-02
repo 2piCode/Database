@@ -63,3 +63,13 @@ CREATE TABLE ArchiveEvents
 	[PurchasedTickects] int not null,
 	FOREIGN KEY (CategoryId) REFERENCES CategoryEvents(Id)
 )
+
+CREATE TABLE ArchiveTickets
+(
+	[Id] int not null identity(1,1) primary key,
+	[Price] money not null,
+	[ArchiveEventId] int not null,
+	[ClientId] int not null,
+	FOREIGN KEY (ArchiveEventId) REFERENCES ArchiveEvents(Id),
+	FOREIGN KEY (ClientId) REFERENCES Clients(Id)
+)
