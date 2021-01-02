@@ -1,3 +1,6 @@
+create database Afish
+go
+
 use Afish
 go
 
@@ -36,9 +39,10 @@ CREATE TABLE Clients
 CREATE TABLE Tickets
 (
 	[Id] int not null identity(1,1) primary key,
-	[EventName] nvarchar(10) check(EventName <> N'') not null,
 	[Price] money not null,
+	[EventId] int not null,
 	[ClientId] int not null,
+	FOREIGN KEY (EventId) REFERENCES Events(Id),
 	FOREIGN KEY (ClientId) REFERENCES Clients(Id)
 )
 
