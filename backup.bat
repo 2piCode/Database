@@ -1,0 +1,1 @@
+SQLCMD -S DESKTOP-DQRHI28\SQLEXPRESS -E -Q "BACKUP DATABASE [Afish] TO  DISK = N'C:\Program Files\Microsoft SQL Server\MSSQL13.SQLEXPRESS\MSSQL\Backup\Afish.bak' WITH NOFORMAT, NOINIT,  NAME = N'Afish-Полная База данных Резервное копирование', SKIP, NOREWIND, NOUNLOAD,  STATS = 10"
