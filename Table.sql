@@ -58,7 +58,6 @@ CREATE TABLE ArchiveEvents
 	[CategoryId] int not null, 
 	[Description] nvarchar(50),
 	[AgeLimit] int not null,
-	[Image] image,
 	[MaxNumTickets] int not null,
 	[PurchasedTickects] int not null,
 	FOREIGN KEY (CategoryId) REFERENCES CategoryEvents(Id)

@@ -29,3 +29,49 @@ begin
 		rollback transaction
 	end
 End
+go
+
+/*
+При удалении прошедших событий необходимо их переносить в архив событий
+*/
+create trigger CheckEventDeleteTrigger
+on Events 
+for delete 
+as 
+begin
+	insert into ArchiveEvents select Name, StartDate, EndDate, Country, 
+	City, Place, CategoryId, Description, AgeLimit, MaxNumTickets, PurchasedNumTickets
+	from deleted
+	print('Data is archived')
+End
+go
+
+create trigger CheckMaxNumTickets
+on Tickets
+for insert 
+as 
+begin
+	declare @event_id int
+	select @event_id = EventId from inserted
+	if ((select MaxNumTickets from Events where id = @event_id) = (select PurchasedNumTickets from Events where id = @event_id))
+	begin
+		print('Maximum number of tickets reached')
+		rollback transaction
+	end
+End
+go
+
+create trigger CheckAgeLimit
+on Tickets
+for insert 
+as
+begin
+	declare @client_id int, @event_id int, @birthday date
+	select @client_id = ClientId, @event_id = EventId from inserted
+	select @birthday = Birthday from Clients where Id = @client_id
+	if (DATEDIFF(day, @birthday, GETDATE()) / 365.25 < (select AgeLimit from Events where Id = @event_id))
+	begin
+		print('Age limit error')
+		rollback transaction
+	end
+End
